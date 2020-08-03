@@ -1,0 +1,13 @@
+extends layouts/main
+
+block content
+    .form-container
+        form(action=routes.login, method='post').form_container
+            label(for="email") email
+            input(type='email', class='email',name='email', placeholder='email')
+
+            label(for="password") password
+            input(type='password', class='password',name='password', placeholder='password')
+
+            input(type='submit', value='Log in')
+        include layouts/components/socialLogin

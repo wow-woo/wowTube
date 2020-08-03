@@ -1,0 +1,16 @@
+extends layouts/main
+
+block content 
+    .form-container
+        form(action=routes.editProfile, method='post')
+            label(for='avatar') Avatar
+            input(type='file', id='avatar', name='avatar')
+            
+            label(for='user_name') Name
+            input(type='text', id='user_name', name='name', placeholder='Name')
+            
+            label(for='user_email') Email
+            input(type='email', id='user_email', name='email', placeholder='Email')
+       
+            input(type='submit' value='Update password')
+        a(href=routes.change_password) Change password

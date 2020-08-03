@@ -1,0 +1,19 @@
+extends layouts/main
+
+block content 
+    .form-container
+        form(action=routes.join, method='post').form_container
+            label(for="email") Email
+            input(type='email', class='email',name='email', placeholder='Email')
+
+            label(for="name") Name
+            input(type='name', class='name',name='name', placeholder='Name')
+
+            label(for="password") Password
+            input(type='password', class='password',name='password', placeholder='Password')
+
+            label(for="password2") Verify Password
+            input(type='password2', class='password2',name='password2', placeholder='Password')
+
+            input(type='submit', value='Create account')
+        include layouts/components/socialLogin

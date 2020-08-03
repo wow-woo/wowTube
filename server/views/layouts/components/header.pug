@@ -1,0 +1,12 @@
+header.header
+    h1
+        a(href=routes.home)
+            i(class="fab fa-youtube")
+    form(action=routes.search, method='get')
+        input(type='text',placeholder='Search...', name='term')
+    nav
+        ul
+            li 
+                a(href=routes.join) join
+            li 
+                a(href=routes.login) log in
