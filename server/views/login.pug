@@ -4,10 +4,12 @@ block content
     .form-container
         form(action=routes.login, method='post').form_container
             label(for="email") email
-            input(type='email', class='email',name='email', placeholder='email')
+            input(type='email', class='email',name='email', placeholder='email', required)
 
             label(for="password") password
-            input(type='password', class='password',name='password', placeholder='password')
+            input(type='password', class='password',name='password', placeholder='password', required)
 
             input(type='submit', value='Log in')
         include layouts/components/socialLogin
+    if re
+        p=re

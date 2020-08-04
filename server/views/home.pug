@@ -5,6 +5,7 @@ block content
     ul.videos
         each video of videos
             +videoBlock({
+                id:video.id,
                 title:video.title,
                 description:video.description ,
                 views:video.views,

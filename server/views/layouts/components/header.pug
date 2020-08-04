@@ -6,7 +6,15 @@ header.header
         input(type='text',placeholder='Search...', name='term')
     nav
         ul
-            li 
-                a(href=routes.join) join
-            li 
-                a(href=routes.login) log in
+            if !user.isAuthenticated
+                li 
+                    a(href=routes.join) join
+                li 
+                    a(href=routes.login) log in
+            else
+                li
+                    a(href=`/videos${routes.upload}`) Upload
+                li
+                    a(href=routes.user_detail(user.id)) Profile
+                li
+                    a(href=routes.logout) Logout

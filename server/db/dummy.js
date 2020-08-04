@@ -38,4 +38,16 @@ export const videos = [
       email: "web@gmail.com",
     },
   },
+  {
+    id: 12345,
+    title: "new video",
+    description: "this is very new video fresh",
+    videoURL:
+      "https://player.vimeo.com/external/427876294.sd.mp4?s=5831c91bfde0e50dcf57519727061dcd5a16bcda&profile_id=164",
+    creator: {
+      id: 7877,
+      name: "web",
+      email: "web@gmail.com",
+    },
+  },
 ];

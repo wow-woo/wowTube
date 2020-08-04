@@ -13,7 +13,7 @@ userRouter.get("/", users);
 
 userRouter.get(routeAddress.edit_profile, editProfile);
 
-userRouter.get(routeAddress.user_detail, userDetail);
+userRouter.get(routeAddress.user_detail(), userDetail);
 
 userRouter.get(routeAddress.change_password, changePassword);
 
