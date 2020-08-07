@@ -1,7 +1,10 @@
 # 🐱‍👤 Brother of youtube
 
-Node.js
-Babel With Nodemon
+## techs:
+
+- Node.js
+- Babel With Nodemon
+- Webpack in order to handle SCSS , modern JS
 
 ## pages:
 
