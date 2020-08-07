@@ -27,6 +27,7 @@ app.use("/", rootRouter);
 //sub routes
 app.use("/users", userRouter);
 app.use("/uploads", express.static("uploads"));
+app.use("/static", express.static("static"));
 app.use("/videos", videoRouter);
 
 const port = process.env.PORT || 5500;

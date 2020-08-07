@@ -1,28 +1,44 @@
 {
-  "name": "wootube",
+  "name": "wowtube",
   "version": "1.0.0",
   "description": "brother of youtube",
   "main": "index.js",
   "scripts": {
     "server": "node server.js",
-    "dev": "nodemon --exec babel-node server.js "
+    "dev:server": "nodemon --exec babel-node server.js ",
+    "dev:assets": "cross-env WEBPACK_ENV=development webpack -w",
+    "build:assets": "cross-env WEBPACK_ENV=production webpack"
   },
   "author": "wow-woo",
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.11.0",
     "@babel/node": "^7.10.5",
+    "@babel/polyfill": "^7.10.4",
     "@babel/preset-env": "^7.11.0",
+    "autoprefixer": "^9.8.6",
+    "babel-loader": "^8.1.0",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
+    "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.23.3",
+    "mini-css-extract-plugin": "^0.9.0",
     "mongoose": "^5.9.27",
-    "pug": "^3.0.0"
+    "multer": "^1.4.2",
+    "postcss": "^7.0.32",
+    "pug": "^3.0.0",
+    "webpack": "^4.44.1"
   },
   "devDependencies": {
+    "css-loader": "^4.2.1",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.4"
+    "node-sass": "^4.14.1",
+    "nodemon": "^2.0.4",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^9.0.3",
+    "webpack-cli": "^3.3.12"
   }
 }

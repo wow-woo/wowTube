@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./assets/scss/styles.scss","webpack:///./assets/scss/config/_variable.scss"],"names":[],"mappings":"AAEA;EACE,mBCHe","file":"styles.css","sourcesContent":["@import \"config/_variable.scss\";\r\n\r\nbody {\r\n  background: $bgColor;\r\n}\r\n","$bgColor: skyblue;\r\n"],"sourceRoot":""}
