@@ -8,24 +8,41 @@ body {
   background: $bgColor;
 }
 
-video {
-  width: 50%;
-}
-
 label {
   text-transform: capitalize;
 }
 button,
-input {
+input:not([type="file"]),
+textarea,
+.fileUpload {
   width: 100%;
+  max-width: 320px;
+  resize: none;
   padding: 7px 10px;
   border-radius: 5px;
+  border: none;
   font-size: 14px;
   color: $black;
+  background-color: #fff;
   font-weight: 600;
   &::placeholder {
     text-transform: capitalize;
     font-weight: 300;
     color: rgba(0, 0, 0, 0.7);
   }
+}
+
+button {
+  border: none;
+  color: #fff;
+  background-color: #3498db;
+  cursor: pointer;
+}
+
+button.delete {
+  background-color: $dark-red;
+}
+
+.fileUpload {
+  background-color: #fff;
 }

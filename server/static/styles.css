@@ -26,41 +26,58 @@ a {
 body {
   background: "#ddd"; }
 
-video {
-  width: 50%; }
-
 label {
   text-transform: capitalize; }
 
 button,
-input {
+input:not([type="file"]),
+textarea,
+.fileUpload {
   width: 100%;
+  max-width: 320px;
+  resize: none;
   padding: 7px 10px;
   border-radius: 5px;
+  border: none;
   font-size: 14px;
   color: #444;
+  background-color: #fff;
   font-weight: 600; }
-  button::-webkit-input-placeholder, input::-webkit-input-placeholder {
+  button::-webkit-input-placeholder, input:not([type="file"])::-webkit-input-placeholder, textarea::-webkit-input-placeholder, .fileUpload::-webkit-input-placeholder {
     text-transform: capitalize;
     font-weight: 300;
     color: rgba(0, 0, 0, 0.7); }
-  button::-moz-placeholder, input::-moz-placeholder {
+  button::-moz-placeholder, input:not([type="file"])::-moz-placeholder, textarea::-moz-placeholder, .fileUpload::-moz-placeholder {
     text-transform: capitalize;
     font-weight: 300;
     color: rgba(0, 0, 0, 0.7); }
-  button:-ms-input-placeholder, input:-ms-input-placeholder {
+  button:-ms-input-placeholder, input:not([type="file"]):-ms-input-placeholder, textarea:-ms-input-placeholder, .fileUpload:-ms-input-placeholder {
     text-transform: capitalize;
     font-weight: 300;
     color: rgba(0, 0, 0, 0.7); }
-  button::-ms-input-placeholder, input::-ms-input-placeholder {
+  button::-ms-input-placeholder, input:not([type="file"])::-ms-input-placeholder, textarea::-ms-input-placeholder, .fileUpload::-ms-input-placeholder {
     text-transform: capitalize;
     font-weight: 300;
     color: rgba(0, 0, 0, 0.7); }
   button::placeholder,
-  input::placeholder {
+  input:not([type="file"])::placeholder,
+  textarea::placeholder,
+  .fileUpload::placeholder {
     text-transform: capitalize;
     font-weight: 300;
     color: rgba(0, 0, 0, 0.7); }
+
+button {
+  border: none;
+  color: #fff;
+  background-color: #3498db;
+  cursor: pointer; }
+
+button.delete {
+  background-color: #bb2f2a; }
+
+.fileUpload {
+  background-color: #fff; }
 
 .header {
   background-color: #ea232c;
@@ -69,7 +86,7 @@ input {
     padding: 5px 0;
     width: 100%;
     margin: 0 auto;
-    max-width: 1000px;
+    max-width: 1200px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     -ms-flex-align: center;
@@ -150,16 +167,33 @@ input {
     width: 100%;
     max-width: 320px;
     margin-bottom: 25px; }
-    .form-container form input {
+    .form-container form .fileUpload {
+      display: block;
       padding: 10px 0;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.12);
-      display: block;
       width: 100%; }
-      .form-container form input:not(:last-child) {
+      .form-container form .fileUpload:not(:last-child) {
         margin-bottom: 25px; }
+    .form-container form textarea {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.12);
+      margin-bottom: 25px; }
+    .form-container form label {
+      display: block;
+      margin-top: 15px;
+      padding: 5px 0; }
+    .form-container form input {
+      box-shadow: 0 0 2px rgba(0, 0, 0, 0.2), 0 0 3px rgba(0, 0, 0, 0.1); }
     .form-container form input[type="submit"] {
+      margin-top: 15px;
       background-color: #3498db;
-      color: #fff; }
+      color: #fff;
+      cursor: pointer; }
+  .form-container a {
+    max-width: 320px;
+    width: 100%; }
+  .form-container .fileUpload label {
+    font-weight: 300;
+    margin-right: 10px; }
 
 .social-login {
   display: -ms-flexbox;
@@ -188,6 +222,58 @@ input {
     background-color: #444; }
   .social-login .social-login--facebook {
     background-color: #3a5998; }
+
+.videoBlock video {
+  margin-bottom: 10px;
+  max-width: 100%; }
+
+.videoBlock .videoBlock-title {
+  font-size: 18px;
+  font-weight: 300;
+  margin-bottom: 10px; }
+
+.video-detail-container {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex-align: center;
+      align-items: center; }
+  .video-detail-container .video-info {
+    width: 100%;
+    max-width: 850px;
+    margin-top: 25px; }
+    .video-detail-container .video-info button {
+      margin-bottom: 15px;
+      width: 100px; }
+    .video-detail-container .video-info .video-title,
+    .video-detail-container .video-info .video-views,
+    .video-detail-container .video-info .video-description {
+      display: block;
+      margin-bottom: 25px; }
+    .video-detail-container .video-info .video-title {
+      font-size: 22px;
+      font-weight: 300; }
+    .video-detail-container .video-info .video-views {
+      font-size: 14px; }
+    .video-detail-container .video-info .video-description {
+      font-size: 16px; }
+  .video-detail-container .video-comments {
+    margin-top: 25px; }
+    .video-detail-container .video-comments .video-comment-number {
+      font-size: 18px; }
+
+.home-videos {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(150px, 1fr));
+  grid-gap: 30px; }
+  .home-videos .videoBlock:first-child,
+  .home-videos .videoBlock:nth-child(2) {
+    grid-column: span 3; }
+  .home-videos .videoBlock:nth-child(3),
+  .home-videos .videoBlock:nth-child(4),
+  .home-videos .videoBlock:nth-child(5) {
+    grid-column: span 2; }
 
 
 /*# sourceMappingURL=styles.css.map*/

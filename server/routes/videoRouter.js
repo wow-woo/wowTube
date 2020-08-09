@@ -4,7 +4,8 @@ import {
   getUpload,
   postUpload,
   videoDetail,
-  editVideo,
+  getEditVideo,
+  postEditVideo,
   deleteVideo,
   video,
 } from "../controllers/videoController";
@@ -17,8 +18,9 @@ videoRouter.get("/", video);
 videoRouter.get(routeAddress.upload, getUpload);
 videoRouter.post(routeAddress.upload, multerMiddleware, postUpload);
 
-videoRouter.get(routeAddress.edit_video, editVideo);
-videoRouter.get(routeAddress.delete_video, deleteVideo);
+videoRouter.get(routeAddress.edit_video(), getEditVideo);
+videoRouter.post(routeAddress.edit_video(), postEditVideo);
+videoRouter.get(routeAddress.delete_video(), deleteVideo);
 videoRouter.get(routeAddress.video_detail(), videoDetail);
 
 export default videoRouter;
