@@ -1,0 +1,54 @@
+.header {
+  background-color: $red;
+  margin-bottom: 50px;
+
+  .header_wrapper {
+    padding: 5px 0;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    .header_column {
+      i {
+        color: #fff;
+        font-size: 40px;
+      }
+      &:nth-child(2) {
+        width: 100%;
+        justify-content: center;
+      }
+      &:last-child {
+        justify-self: end;
+      }
+      ul {
+        display: flex;
+        color: #fff;
+        font-weight: 600;
+        text-transform: uppercase;
+        li:not(:last-child) {
+          margin-right: 15px;
+        }
+        li > a {
+          color: inherit;
+        }
+      }
+      form {
+        width: 100%;
+        input {
+          width: 100%;
+          padding: 7px 10px;
+          border-radius: 5px;
+          font-size: 14px;
+          color: $black;
+          font-weight: 600;
+          &::placeholder {
+            font-weight: 300;
+            color: rgba(0, 0, 0, 0.7);
+          }
+        }
+      }
+    }
+  }
+}

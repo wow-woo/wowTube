@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  color: $primaryColor;
+}
+input {
+  border: none;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+  }
+  &:active {
+    outline: none;
+  }
+}
+li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "server": "node server.js",
-    "dev:server": "nodemon --exec babel-node server.js ",
+    "dev:server": "nodemon --exec babel-node server.js --ignore 'scss' ",
     "dev:assets": "cross-env WEBPACK_ENV=development webpack -w",
     "build:assets": "cross-env WEBPACK_ENV=production webpack"
   },
@@ -33,7 +33,6 @@
   },
   "devDependencies": {
     "css-loader": "^4.2.1",
-    "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "morgan": "^1.10.0",
     "node-sass": "^4.14.1",
     "nodemon": "^2.0.4",
