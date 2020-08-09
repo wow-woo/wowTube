@@ -15,7 +15,7 @@ rootRouter.get("/", home);
 
 //join
 rootRouter.get(routeAddress.join, getJoin);
-rootRouter.post(routeAddress.join, postJoin);
+rootRouter.post(routeAddress.join, postJoin, postLogin);
 
 //login
 rootRouter.get(routeAddress.login, getLogin);
