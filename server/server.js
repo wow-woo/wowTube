@@ -3,7 +3,6 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import helmet from "helmet";
 import logger from "morgan";
-import authMiddleware from "./middlewares/authMiddleware";
 import localsMiddleware from "./middlewares/localsMiddleware";
 import rootRouter from "./routes/rootRouter";
 import passport from "passport";
@@ -12,10 +11,13 @@ import session from "express-session";
 import videoRouter from "./routes/videoRouter";
 import userRouter from "./routes/userRouter";
 import "./db/mongoose";
+import connectionMongo from "connect-mongo";
+import mongoose from "mongoose";
 
 const app = express();
 app.set("view engine", "pug");
 
+const Store = connectionMongo(session);
 //global middleware
 app.use(helmet());
 app.use(logger("dev"));
@@ -27,13 +29,13 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: false,
-    // this is for https connection for secure
+    store: new Store({ mongooseConnection: mongoose.connection }),
+    // this is for https connection for secureg
     // cookie: { secure: true },
   })
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(authMiddleware);
 app.use(localsMiddleware);
 
 //root routes

@@ -1,8 +1,19 @@
-export default (req, res, next) => {
-  //authenticating...
-  // if true
-  res.locals.user = req.user || {};
-  console.log(req.user);
+import routes from "../routes/routes";
 
-  next();
+export const onlyPublic = (req, res, next) => {
+  //authenticating...
+  if (req.user) {
+    res.redirect(routes.home);
+  } else {
+    next();
+  }
+};
+
+export const onlyPrivate = (req, res, next) => {
+  //authenticating...
+  if (req.user) {
+    next();
+  } else {
+    res.redirect(routes.home);
+  }
 };

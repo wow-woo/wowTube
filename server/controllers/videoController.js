@@ -2,10 +2,10 @@ import VideoModel from "../db/models/VideoModel";
 
 export const home = async (req, res) => {
   try {
+    console.log(res.locals);
     const videos = await VideoModel.find({});
     res.render("home", { page: "page", videos });
   } catch (error) {
-    console.log(error);
     res.render("error", { error });
   }
 };
@@ -24,13 +24,12 @@ export const search = async (req, res) => {
     });
     const videos = await Object.assign(videos_title, videos_des);
 
-    console.log(videos);
     res.render("search", { searchingBy, videos });
   } catch (error) {
     res.render("error", { error });
   }
 };
-export const video = (req, res) => res.render("video");
+export const video = (req, res) => res.render("videos");
 
 export const getUpload = (req, res) => {
   res.render("upload");
@@ -46,7 +45,6 @@ export const postUpload = async (req, res) => {
     description,
   });
 
-  console.log(newVideo);
   res.redirect(res.locals.routes.video_detail(newVideo.id));
 };
 

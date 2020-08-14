@@ -10,17 +10,26 @@ import {
   video,
 } from "../controllers/videoController";
 import multerMiddleware from "../middlewares/multerMiddleware";
+import { onlyPrivate } from "../middlewares/authMiddleware";
 
 const videoRouter = express.Router();
 
 videoRouter.get("/", video);
 
-videoRouter.get(routeAddress.upload, getUpload);
-videoRouter.post(routeAddress.upload, multerMiddleware, postUpload);
+videoRouter.get(routeAddress.upload, onlyPrivate, getUpload);
+videoRouter.post(
+  routeAddress.upload,
+  onlyPrivate,
+  multerMiddleware,
+  postUpload
+);
 
-videoRouter.get(routeAddress.edit_video(), getEditVideo);
-videoRouter.post(routeAddress.edit_video(), postEditVideo);
-videoRouter.get(routeAddress.delete_video(), deleteVideo);
+videoRouter.get(routeAddress.edit_video(), onlyPrivate, getEditVideo);
+
+videoRouter.post(routeAddress.edit_video(), onlyPrivate, postEditVideo);
+
+videoRouter.get(routeAddress.delete_video(), onlyPrivate, deleteVideo);
+
 videoRouter.get(routeAddress.video_detail(), videoDetail);
 
 export default videoRouter;
