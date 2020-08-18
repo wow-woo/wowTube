@@ -13,6 +13,10 @@ import userRouter from "./routes/userRouter";
 import "./db/mongoose";
 import connectionMongo from "connect-mongo";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+import socialLoginRoute from "./routes/socialLoginRoute";
+
+dotenv.config();
 
 const app = express();
 app.set("view engine", "pug");
@@ -41,12 +45,13 @@ app.use(localsMiddleware);
 //root routes
 app.use("/", rootRouter);
 //sub routes
+app.use("/auth", socialLoginRoute);
 app.use("/users", userRouter);
 app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("static"));
 app.use("/videos", videoRouter);
 
-const port = process.env.PORT || 5500;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log("listening on " + port);
 });

@@ -9,7 +9,7 @@ import {
   deleteVideo,
   video,
 } from "../controllers/videoController";
-import multerMiddleware from "../middlewares/multerMiddleware";
+import { multerVideo } from "../middlewares/multerMiddleware";
 import { onlyPrivate } from "../middlewares/authMiddleware";
 
 const videoRouter = express.Router();
@@ -17,12 +17,7 @@ const videoRouter = express.Router();
 videoRouter.get("/", video);
 
 videoRouter.get(routeAddress.upload, onlyPrivate, getUpload);
-videoRouter.post(
-  routeAddress.upload,
-  onlyPrivate,
-  multerMiddleware,
-  postUpload
-);
+videoRouter.post(routeAddress.upload, onlyPrivate, multerVideo, postUpload);
 
 videoRouter.get(routeAddress.edit_video(), onlyPrivate, getEditVideo);
 

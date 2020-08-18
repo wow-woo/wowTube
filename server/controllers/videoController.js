@@ -38,12 +38,15 @@ export const postUpload = async (req, res) => {
   const { title, description } = req.body;
   const { originalname, mimetype, path, size } = req.file;
 
-  // console.log(originalname, mimetype, path, size);
   const newVideo = await VideoModel.create({
     videoURL: path,
     title,
     description,
+    creator: req.user.id,
   });
+
+  req.user.videos.push(newVideo.id);
+  req.user.save();
 
   res.redirect(res.locals.routes.video_detail(newVideo.id));
 };
@@ -51,17 +54,26 @@ export const postUpload = async (req, res) => {
 export const videoDetail = async (req, res) => {
   try {
     const id = req.params.id;
-    const video = await VideoModel.findById(id);
+    const video = await VideoModel.findById(id).populate("creator");
+
+    console.log("video", video);
+
     res.render("videoDetail", { video });
   } catch (error) {
     res.render("error", { error });
   }
 };
+
 export const getEditVideo = async (req, res) => {
   try {
     const id = req.params.id;
     const video = await VideoModel.findById(id);
-    res.render("editVideo", { video });
+
+    if (video.creator == req.user.id) {
+      res.render("editVideo", { video });
+    } else {
+      throw Error();
+    }
   } catch (error) {
     res.render("error", { error });
   }
@@ -79,8 +91,15 @@ export const deleteVideo = async (req, res) => {
   const id = req.params.id;
 
   try {
-    await VideoModel.findByIdAndRemove(id);
-    res.redirect(res.locals.routes.home);
+    const video = await VideoModel.findById(id);
+
+    if (video.creator == req.user.id) {
+      await VideoModel.findByIdAndRemove(id);
+
+      res.redirect(res.locals.routes.home);
+    } else {
+      throw Error();
+    }
   } catch (error) {
     res.render("error", { error });
   }

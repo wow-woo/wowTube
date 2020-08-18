@@ -2,17 +2,15 @@ extends layouts/main
 
 block content 
     .form-container
-        form(action=routes.editProfile, method='post')
+        form(action=routes.editProfile, method='post' enctype='multipart/form-data')
             .fileUpload
                 label(for='avatar') Avatar
-                input(type='file', id='avatar', name='avatar')
+                input(type='file', id='avatar', name='avatar', accept='image/*')
             
             label(for='user_name') Name
-            input(type='text', id='user_name', name='name', placeholder='Name')
+            input(type='text', id='user_name', name='name', placeholder='Name' value=loggedUser.name)
             
             label(for='user_email') Email
-            input(type='email', id='user_email', name='email', placeholder='Email')
+            input(type='email', id='user_email', name='email', placeholder='Email' value=loggedUser.email)
        
-            input(type='submit' value='Update password')
-        a(href=routes.change_password) Change password
-            button Change password
+            input(type='submit' value='Update profile')

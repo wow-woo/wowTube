@@ -7,8 +7,9 @@ import {
   getLogin,
   postLogin,
   logout,
+  getMe,
 } from "../controllers/userController";
-import { onlyPublic } from "../middlewares/authMiddleware";
+import { onlyPublic, onlyPrivate } from "../middlewares/authMiddleware";
 
 const rootRouter = express.Router();
 
@@ -23,7 +24,9 @@ rootRouter.post(routeAddress.join, onlyPublic, postJoin, postLogin);
 rootRouter.get(routeAddress.login, onlyPublic, getLogin);
 rootRouter.post(routeAddress.login, onlyPublic, postLogin);
 
-rootRouter.get(routeAddress.logout, logout);
+rootRouter.get(routeAddress.me, onlyPrivate, getMe);
+
+rootRouter.get(routeAddress.logout, onlyPrivate, logout);
 
 rootRouter.get(routeAddress.search, search);
 

@@ -1,12 +1,9 @@
 import mongoose from "mongoose";
-import UserModel from "./UserModel";
-import LikeModel from "./LikeModel";
-import DislikeModel from "./DislikeModel";
 
 const CommentSchema = mongoose.Schema({
   writer: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: UserModel,
+    ref: "UserModel",
   },
   text: {
     type: String,
@@ -14,11 +11,11 @@ const CommentSchema = mongoose.Schema({
   },
   likes: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: LikeModel,
+    ref: "LikeModel",
   },
   dislikes: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: DislikeModel,
+    ref: "DislikeModel",
   },
   createdAt: {
     type: Date,

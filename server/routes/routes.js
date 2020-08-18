@@ -6,12 +6,17 @@ const JOIN = "/join";
 const LOGIN = "/login";
 const LOGOUT = "/logout";
 const SEARCH = "/search";
+const GITHUB = "/github";
+const FACEBOOK = "/facebook";
+const GITHUB_CB = "/github/callback";
+const FACEBOOK_CB = "/facebook/callback";
 
 //user info
 const USERS = "/users";
 const EDIT_PROFILE = "/edit-profile";
 const CHANGE_PASSWORD = "/change-password";
 const USER_DETAIL = "/:id";
+const ME = "/me";
 
 //video
 const VIDEO = "/video";
@@ -61,6 +66,11 @@ const routes = {
       return DELETE_VIDEO;
     }
   },
+  github: GITHUB,
+  facebook: FACEBOOK,
+  github_cb: GITHUB_CB,
+  facebook_cb: FACEBOOK_CB,
+  me: ME,
 };
 
 export default routes;

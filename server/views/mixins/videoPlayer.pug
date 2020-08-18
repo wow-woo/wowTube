@@ -1,0 +1,18 @@
+mixin videoPlayer(video={})
+    .videoPlayer#wowPlayer
+        video(src=video.src, muted, autoplay, loop)
+        .videoPlayer_controls
+            .videoPlayer_column
+                span.video-volume
+                    i(class="fas fa-volume-up")
+                span.video-runtime
+                    |00:00 / 10:00
+            .videoPlayer_column
+                span.video-play-pause
+                    i(class='fas fa-pause-circle')
+            .videoPlayer_column
+                span.video-expand
+                    i(class='fas fa-expand')
+            .videoPlayer_column
+                span.test-click
+                    i HELLO

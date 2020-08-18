@@ -1,7 +1,4 @@
 import mongoose from "mongoose";
-import LikeModel from "./LikeModel";
-import DislikeModel from "./DislikeModel";
-import CommentModel from "./CommentModel";
 
 const VideoSchema = new mongoose.Schema({
   videoURL: {
@@ -25,18 +22,22 @@ const VideoSchema = new mongoose.Schema({
   },
   likes: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: LikeModel,
+    ref: "LikeModel",
   },
   dislikes: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: DislikeModel,
+    ref: "DislikeModel",
   },
   comments: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: CommentModel,
+      ref: "CommentModel",
     },
   ],
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "UserModel",
+  },
 });
 
 export default mongoose.model("VideoModel", VideoSchema);

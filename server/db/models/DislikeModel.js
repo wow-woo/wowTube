@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
-import UserModel from "./UserModel";
 
 const DislikeSchema = mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: UserModel,
+    ref: "UserModel",
   },
   count: {
     type: Number,

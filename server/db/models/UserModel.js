@@ -18,7 +18,18 @@ const UserSchema = mongoose.Schema({
   githubId: {
     type: Number,
   },
-
+  videos: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "VideoModel",
+    },
+  ],
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "CommentModel",
+    },
+  ],
   // password: {
   //   type: String,
   //   required: "password is required",

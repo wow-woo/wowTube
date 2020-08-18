@@ -1,11 +1,15 @@
 @import "config/_variable.scss";
 @import "config/reset.scss";
+@import "config/utils.scss";
+
 @import "main.scss";
 @import "components/header.scss";
 @import "components/footer.scss";
 @import "components/form.scss";
 @import "components/socialLogin.scss";
 @import "components/videoBlock.scss";
+@import "components/videoPlayer.scss";
 
 @import "pages/videoDetail.scss";
 @import "pages/home.scss";
+@import "pages/userProfile.scss";

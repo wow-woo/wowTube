@@ -97,46 +97,129 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scss_styles_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../scss/styles.scss */ "./assets/scss/styles.scss");
 /* harmony import */ var _scss_styles_scss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_scss_styles_scss__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _videoPlayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./videoPlayer */ "./assets/js/videoPlayer.js");
+/* harmony import */ var _videoPlayer__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_videoPlayer__WEBPACK_IMPORTED_MODULE_1__);
+
+
+
+/***/ }),
+
+/***/ "./assets/js/videoPlayer.js":
+/*!**********************************!*\
+  !*** ./assets/js/videoPlayer.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+var videoContainer = document.querySelector("#wowPlayer");
 
-var haha = {
-  ha: "ha",
-  ho: "ho"
+var videoConfig = function videoConfig() {
+  var videoPlayer = videoContainer.querySelector("video");
+  var video_volume = videoContainer.querySelector(" .video-volume");
+  var video_expand = videoContainer.querySelector(".video-expand");
+  var video_play_pause = videoContainer.querySelector(".video-play-pause");
+  var video_runtime = videoContainer.querySelector(".video-runtime");
+  var testC = videoContainer.querySelector(".test-click");
+
+  var playVideo = function playVideo(e) {
+    if (videoPlayer.paused) {
+      videoPlayer.play();
+      video_play_pause.firstChild.classList.replace("fa-play-circle", "fa-pause-circle");
+    } else {
+      video_play_pause.firstChild.classList.replace("fa-pause-circle", "fa-play-circle");
+      videoPlayer.pause();
+    }
+  };
+
+  video_play_pause.addEventListener("click", playVideo);
+
+  var volumeVideo = function volumeVideo(e) {
+    if (videoPlayer.muted) {
+      video_volume.firstChild.classList.replace("fa-volume-up", "fa-volume-mute");
+      videoPlayer.muted = false;
+    } else {
+      video_volume.firstChild.classList.replace("fa-volume-mute", "fa-volume-up");
+      videoPlayer.muted = true;
+    }
+  };
+
+  video_volume.addEventListener("click", volumeVideo);
+
+  var scaleVideo = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (!document.fullscreenElement) {
+                _context.next = 5;
+                break;
+              }
+
+              document.exitFullscreen();
+              video_expand.firstChild.classList.replace("fa-compress-alt", "fa-expand");
+              _context.next = 14;
+              break;
+
+            case 5:
+              _context.prev = 5;
+              _context.next = 8;
+              return videoContainer.requestFullscreen();
+
+            case 8:
+              video_expand.firstChild.classList.replace("fa-expand", "fa-compress-alt");
+              _context.next = 14;
+              break;
+
+            case 11:
+              _context.prev = 11;
+              _context.t0 = _context["catch"](5);
+              console.log(_context.t0);
+
+            case 14:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, null, [[5, 11]]);
+    }));
+
+    return function scaleVideo(_x) {
+      return _ref.apply(this, arguments);
+    };
+  }();
+
+  video_expand.addEventListener("click", scaleVideo);
+
+  var timer = function timer() {
+    if (videoPlayer.ended) {
+      return;
+    }
+
+    var dT = parseInt(videoPlayer.duration, 10);
+    var cT = parseInt(videoPlayer.currentTime, 10);
+    video_runtime.textContent = "".concat(cT, " / ").concat(dT);
+    requestAnimationFrame(function () {
+      return requestAnimationFrame(timer);
+    });
+  };
+
+  videoPlayer.addEventListener("play", timer);
+
+  var clickhandler = function clickhandler(e) {
+    videoPlayer.currentTime = 7;
+  };
+
+  testC.addEventListener("click", clickhandler);
 };
 
-var as = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var com, result;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return setTimeout(function () {
-              "end";
-            }, 2000);
-
-          case 2:
-            com = _context.sent;
-            result = (haha === null || haha === void 0 ? void 0 : haha.ha) + (haha === null || haha === void 0 ? void 0 : haha.ho) + com;
-            console.log("this is static~");
-            return _context.abrupt("return", result);
-
-          case 6:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-
-  return function as() {
-    return _ref.apply(this, arguments);
-  };
-}();
+if (videoContainer) {
+  videoConfig();
+}
 
 /***/ }),
 

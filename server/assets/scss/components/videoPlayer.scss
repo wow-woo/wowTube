@@ -1,0 +1,46 @@
+.videoPlayer {
+  position: relative;
+  &:hover {
+    .videoPlayer_controls {
+      opacity: 1;
+    }
+  }
+  video {
+    width: 100%;
+    max-width: 100%;
+  }
+  .videoPlayer_controls {
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.4s linear;
+    color: #fff;
+    position: absolute;
+    bottom: 10px;
+    z-index: 9;
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    font-size: 18px;
+
+    .videoPlayer_column:first-child {
+      display: flex;
+      align-items: center;
+
+      span:first-child {
+        margin-right: 10px;
+      }
+    }
+    .videoPlayer_column:nth-child(2) {
+      justify-self: center;
+    }
+    .videoPlayer_column:nth-child(3) {
+      justify-self: end;
+    }
+    i {
+      font-size: 25px;
+      cursor: pointer;
+    }
+  }
+}

@@ -18,6 +18,11 @@ li {
 a {
   text-decoration: none; }
 
+.u-avatar {
+  height: 80px;
+  background-color: #f00;
+  border-radius: 50%; }
+
 * {
   margin: 0;
   padding: 0;
@@ -232,13 +237,54 @@ button.delete {
   font-weight: 300;
   margin-bottom: 10px; }
 
+.videoPlayer {
+  position: relative; }
+  .videoPlayer:hover .videoPlayer_controls {
+    opacity: 1; }
+  .videoPlayer video {
+    width: 100%;
+    max-width: 100%; }
+  .videoPlayer .videoPlayer_controls {
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.4s linear;
+    color: #fff;
+    position: absolute;
+    bottom: 10px;
+    z-index: 9;
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    font-size: 18px; }
+    .videoPlayer .videoPlayer_controls .videoPlayer_column:first-child {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: center;
+          align-items: center; }
+      .videoPlayer .videoPlayer_controls .videoPlayer_column:first-child span:first-child {
+        margin-right: 10px; }
+    .videoPlayer .videoPlayer_controls .videoPlayer_column:nth-child(2) {
+      justify-self: center; }
+    .videoPlayer .videoPlayer_controls .videoPlayer_column:nth-child(3) {
+      justify-self: end; }
+    .videoPlayer .videoPlayer_controls i {
+      font-size: 25px;
+      cursor: pointer; }
+
 .video-detail-container {
+  width: 70%;
+  max-width: 850px;
+  margin: 0 auto;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: column;
       flex-direction: column;
   -ms-flex-align: center;
       align-items: center; }
+  .video-detail-container .videoPlayer {
+    width: 100%; }
   .video-detail-container .video-info {
     width: 100%;
     max-width: 850px;
@@ -246,6 +292,8 @@ button.delete {
     .video-detail-container .video-info button {
       margin-bottom: 15px;
       width: 100px; }
+    .video-detail-container .video-info .video_author a {
+      color: #3498db; }
     .video-detail-container .video-info .video-title,
     .video-detail-container .video-info .video-views,
     .video-detail-container .video-info .video-description {
@@ -274,6 +322,35 @@ button.delete {
   .home-videos .videoBlock:nth-child(4),
   .home-videos .videoBlock:nth-child(5) {
     grid-column: span 2; }
+
+.user-profile {
+  width: 100%;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex-align: center;
+      align-items: center; }
+  .user-profile .user-profile_header {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+        flex-direction: column;
+    -ms-flex-align: center;
+        align-items: center;
+    margin-bottom: 18px; }
+    .user-profile .user-profile_header .profile_username {
+      font-size: 18px;
+      margin-top: 15px; }
+  .user-profile .user-profile_btns {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+        flex-direction: column;
+    -ms-flex-align: center;
+        align-items: center; }
+    .user-profile .user-profile_btns a:not(last-child) {
+      margin-bottom: 20px; }
 
 
 /*# sourceMappingURL=styles.css.map*/

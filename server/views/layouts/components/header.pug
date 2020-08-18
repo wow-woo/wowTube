@@ -8,7 +8,7 @@ header.header
                 input(type='text',placeholder='Search...', name='term')
         nav.header_column
             ul
-                if !user
+                if !loggedUser
 
                     li 
                         a(href=routes.join) join
@@ -18,7 +18,8 @@ header.header
                     li
                         a(href=`/videos${routes.upload}`) Upload
                     li
-                        a(href=routes.user_detail(user.id)) Profile
+                        //- a(href=routes.user_detail(user.id)) Profile
+                        a(href=routes.me) Profile
                     li
                         a(href=routes.logout) Logout
     
