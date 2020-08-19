@@ -195,27 +195,55 @@ var videoConfig = function videoConfig() {
 
   video_expand.addEventListener("click", scaleVideo);
 
-  var timer = function timer() {
-    if (videoPlayer.ended) {
-      return;
+  var timeFormat = function timeFormat(seconds) {
+    var intSeconds = parseInt(seconds, 10);
+    var hours = Math.floor(intSeconds / 3600);
+    var minutes = Math.floor((intSeconds - hours * 3600) / 60);
+    var restSeconds = intSeconds - hours * 3600 - minutes * 60;
+
+    if (hours < 10) {
+      hours = "0".concat(hours);
     }
 
-    var dT = parseInt(videoPlayer.duration, 10);
-    var cT = parseInt(videoPlayer.currentTime, 10);
-    video_runtime.textContent = "".concat(cT, " / ").concat(dT);
-    requestAnimationFrame(function () {
-      return requestAnimationFrame(timer);
-    });
+    if (minutes < 10) {
+      minutes = "0".concat(minutes);
+    }
+
+    if (seconds < 10) {
+      restSeconds = "0".concat(intSeconds);
+    }
+
+    return "".concat(hours, ":").concat(minutes, ":").concat(restSeconds);
   };
 
-  videoPlayer.addEventListener("play", timer);
+  var timeHandler = function timeHandler() {
+    var totalDuration = timeFormat(videoPlayer.duration);
+    var grant = -1;
 
-  var clickhandler = function clickhandler(e) {
-    videoPlayer.currentTime = 7;
+    var timeChecker = function timeChecker() {
+      if (videoPlayer.ended || videoPlayer.paused) {
+        return;
+      }
+
+      console.log(grant === parseInt(videoPlayer.currentTime, 10));
+      var currentRunTime = timeFormat(videoPlayer.currentTime);
+
+      if (grant !== parseInt(videoPlayer.currentTime, 10)) {
+        video_runtime.textContent = "".concat(currentRunTime, " / ").concat(totalDuration);
+        grant = parseInt(videoPlayer.currentTime, 10);
+      }
+
+      requestAnimationFrame(function () {
+        return requestAnimationFrame(timeChecker);
+      });
+    };
+
+    timeChecker();
   };
 
-  testC.addEventListener("click", clickhandler);
-};
+  videoPlayer.addEventListener("play", timeHandler);
+}; //initiate video play config
+
 
 if (videoContainer) {
   videoConfig();

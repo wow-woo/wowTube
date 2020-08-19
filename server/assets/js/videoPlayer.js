@@ -62,26 +62,49 @@ const videoConfig = () => {
   };
   video_expand.addEventListener("click", scaleVideo);
 
-  const timer = () => {
-    if (videoPlayer.ended) {
-      return;
+  const timeFormat = (seconds) => {
+    const intSeconds = parseInt(seconds, 10);
+    let hours = Math.floor(intSeconds / 3600);
+    let minutes = Math.floor((intSeconds - hours * 3600) / 60);
+    let restSeconds = intSeconds - hours * 3600 - minutes * 60;
+
+    if (hours < 10) {
+      hours = `0${hours}`;
     }
-
-    const dT = parseInt(videoPlayer.duration, 10);
-    const cT = parseInt(videoPlayer.currentTime, 10);
-
-    video_runtime.textContent = `${cT} / ${dT}`;
-
-    requestAnimationFrame(() => requestAnimationFrame(timer));
+    if (minutes < 10) {
+      minutes = `0${minutes}`;
+    }
+    if (seconds < 10) {
+      restSeconds = `0${intSeconds}`;
+    }
+    return `${hours}:${minutes}:${restSeconds}`;
   };
-  videoPlayer.addEventListener("play", timer);
 
-  const clickhandler = (e) => {
-    videoPlayer.currentTime = 7;
+  const timeHandler = () => {
+    const totalDuration = timeFormat(videoPlayer.duration);
+
+    let grant = -1;
+    const timeChecker = () => {
+      if (videoPlayer.ended || videoPlayer.paused) {
+        return;
+      }
+
+      console.log(grant === parseInt(videoPlayer.currentTime, 10));
+      const currentRunTime = timeFormat(videoPlayer.currentTime);
+
+      if (grant !== parseInt(videoPlayer.currentTime, 10)) {
+        video_runtime.textContent = `${currentRunTime} / ${totalDuration}`;
+        grant = parseInt(videoPlayer.currentTime, 10);
+      }
+
+      requestAnimationFrame(() => requestAnimationFrame(timeChecker));
+    };
+    timeChecker();
   };
-  testC.addEventListener("click", clickhandler);
+  videoPlayer.addEventListener("play", timeHandler);
 };
 
+//initiate video play config
 if (videoContainer) {
   videoConfig();
 }
