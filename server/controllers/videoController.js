@@ -104,3 +104,19 @@ export const deleteVideo = async (req, res) => {
     res.render("error", { error });
   }
 };
+
+export const viewHandler = async (req, res) => {
+  try {
+    const videoID = req.params.id;
+    await VideoModel.findByIdAndUpdate(
+      videoID,
+      {
+        $inc: { views: 1 },
+      },
+      { new: true }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+  }
+};

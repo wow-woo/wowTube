@@ -98,7 +98,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _scss_styles_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../scss/styles.scss */ "./assets/scss/styles.scss");
 /* harmony import */ var _scss_styles_scss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_scss_styles_scss__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _videoPlayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./videoPlayer */ "./assets/js/videoPlayer.js");
-/* harmony import */ var _videoPlayer__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_videoPlayer__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _videoRecorder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./videoRecorder */ "./assets/js/videoRecorder.js");
+/* harmony import */ var _videoRecorder__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_videoRecorder__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 
@@ -108,12 +110,17 @@ __webpack_require__.r(__webpack_exports__);
 /*!**********************************!*\
   !*** ./assets/js/videoPlayer.js ***!
   \**********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 var videoContainer = document.querySelector("#wowPlayer");
 
@@ -123,6 +130,7 @@ var videoConfig = function videoConfig() {
   var video_expand = videoContainer.querySelector(".video-expand");
   var video_play_pause = videoContainer.querySelector(".video-play-pause");
   var video_runtime = videoContainer.querySelector(".video-runtime");
+  var volumeTrack = videoContainer.querySelector("#volume-track");
   var testC = videoContainer.querySelector(".test-click");
 
   var playVideo = function playVideo(e) {
@@ -135,19 +143,33 @@ var videoConfig = function videoConfig() {
     }
   };
 
-  video_play_pause.addEventListener("click", playVideo);
-
   var volumeVideo = function volumeVideo(e) {
+    var ico = document.createElement("i");
+    ico.classList.add("fas");
+
     if (videoPlayer.muted) {
-      video_volume.firstChild.classList.replace("fa-volume-up", "fa-volume-mute");
+      if (videoPlayer.volume >= "0.6") {
+        video_volume.firstChild.remove();
+        ico.classList.add("fa-volume-up");
+      } else if (videoPlayer.volume >= "0.3") {
+        video_volume.firstChild.remove();
+        ico.classList.add("fa-volume-down");
+      } else {
+        video_volume.firstChild.remove();
+        ico.classList.add("fa-volume-off");
+      }
+
+      video_volume.appendChild(ico);
       videoPlayer.muted = false;
+      volumeTrack.value = videoPlayer.volume;
     } else {
-      video_volume.firstChild.classList.replace("fa-volume-mute", "fa-volume-up");
+      video_volume.firstChild.remove();
+      ico.classList.add("fa-volume-mute");
+      video_volume.appendChild(ico);
       videoPlayer.muted = true;
+      volumeTrack.value = 0;
     }
   };
-
-  video_volume.addEventListener("click", volumeVideo);
 
   var scaleVideo = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
@@ -193,8 +215,6 @@ var videoConfig = function videoConfig() {
     };
   }();
 
-  video_expand.addEventListener("click", scaleVideo);
-
   var timeFormat = function timeFormat(seconds) {
     var intSeconds = parseInt(seconds, 10);
     var hours = Math.floor(intSeconds / 3600);
@@ -216,21 +236,25 @@ var videoConfig = function videoConfig() {
     return "".concat(hours, ":").concat(minutes, ":").concat(restSeconds);
   };
 
-  var timeHandler = function timeHandler() {
+  var timeHandler = function timeHandler(e) {
     var totalDuration = timeFormat(videoPlayer.duration);
     var grant = -1;
 
     var timeChecker = function timeChecker() {
-      if (videoPlayer.ended || videoPlayer.paused) {
-        return;
-      }
-
-      console.log(grant === parseInt(videoPlayer.currentTime, 10));
       var currentRunTime = timeFormat(videoPlayer.currentTime);
 
       if (grant !== parseInt(videoPlayer.currentTime, 10)) {
         video_runtime.textContent = "".concat(currentRunTime, " / ").concat(totalDuration);
         grant = parseInt(videoPlayer.currentTime, 10);
+      }
+
+      if (videoPlayer.ended) {
+        video_play_pause.firstChild.classList.replace("fa-pause-circle", "fa-play-circle");
+        return;
+      }
+
+      if (e.type === "loadedmetadata" || videoPlayer.paused) {
+        return;
       }
 
       requestAnimationFrame(function () {
@@ -241,12 +265,169 @@ var videoConfig = function videoConfig() {
     timeChecker();
   };
 
+  var volumeHandler = function volumeHandler(e) {
+    var val = e.currentTarget.value;
+    var ico = document.createElement("i");
+    ico.classList.add("fas");
+    video_volume.firstChild.remove();
+
+    if (val === "0") {
+      ico.classList.add("fa-volume-mute");
+      video_volume.appendChild(ico);
+      videoPlayer.muted = true;
+    } else if (val >= "0.6") {
+      ico.classList.add("fa-volume-up");
+      video_volume.appendChild(ico);
+      videoPlayer.muted = false;
+    } else if (val >= "0.3") {
+      ico.classList.add("fa-volume-down");
+      video_volume.appendChild(ico);
+      videoPlayer.muted = false;
+    } else {
+      ico.classList.add("fa-volume-off");
+      video_volume.appendChild(ico);
+      videoPlayer.muted = false;
+    }
+
+    videoPlayer.volume = val;
+  };
+
+  video_play_pause.addEventListener("click", playVideo);
+  video_volume.addEventListener("click", volumeVideo);
+  volumeTrack.addEventListener("input", volumeHandler);
+  video_expand.addEventListener("click", scaleVideo);
+  videoPlayer.addEventListener("loadedmetadata", timeHandler);
   videoPlayer.addEventListener("play", timeHandler);
+  videoPlayer.volume = 0;
 }; //initiate video play config
 
 
 if (videoContainer) {
   videoConfig();
+}
+
+/***/ }),
+
+/***/ "./assets/js/videoRecorder.js":
+/*!************************************!*\
+  !*** ./assets/js/videoRecorder.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var recorderContainer = document.querySelector("#recorderContainer");
+
+var recordConfig = function recordConfig() {
+  var videoRecorder = {};
+  var stream = {};
+  var videoScreen = document.createElement("video");
+  var video_preview = document.querySelector("#video_preview");
+  var btn_record = document.querySelector("#btn_record");
+  var btn_pause_resume = document.querySelector("#btn_pause_resume ");
+
+  var getBlob = function getBlob(event) {
+    var a_link = document.createElement("a");
+    a_link.href = URL.createObjectURL(event.data);
+    a_link.download = "recorded.webm";
+    a_link.click();
+    videoRecorder.removeEventListener("dataavailable", getBlob);
+  };
+
+  var pauseResume = function pauseResume() {
+    if (videoRecorder.state === "recording") {
+      btn_pause_resume.textContent = "Pause";
+      videoScreen.pause();
+      videoRecorder.pause();
+    } else if (videoRecorder.state === "paused") {
+      btn_pause_resume.textContent = "Resume";
+      videoScreen.play();
+      videoRecorder.resume();
+    } else {
+      return;
+    }
+  };
+
+  var stopRecorder = function stopRecorder() {
+    videoRecorder.stop();
+    videoScreen.remove();
+    btn_record.textContent = "Complete";
+    btn_pause_resume.style = "display:none";
+    btn_record.removeEventListener("click", stopRecorder);
+    btn_record.addEventListener("click", setRecorder);
+  };
+
+  var setPreview = function setPreview(e) {
+    videoScreen.srcObject = stream;
+    videoScreen.muted = true;
+    videoScreen.autoplay = true;
+    video_preview.appendChild(videoScreen);
+  };
+
+  var setRecorder = function setRecorder() {
+    setPreview();
+    videoRecorder = new MediaRecorder(stream, {
+      mimeType: "video/webm"
+    });
+    videoRecorder.start();
+    btn_record.textContent = "Recording...";
+    btn_pause_resume.style = "display:block";
+    btn_record.removeEventListener("click", setRecorder);
+    videoRecorder.addEventListener("dataavailable", getBlob);
+    btn_pause_resume.addEventListener("click", pauseResume);
+    btn_record.addEventListener("click", stopRecorder);
+  };
+
+  var accessDevice = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.prev = 0;
+              _context.next = 3;
+              return navigator.mediaDevices.getUserMedia({
+                audio: true,
+                video: {
+                  width: "100%",
+                  height: "auto"
+                }
+              });
+
+            case 3:
+              stream = _context.sent;
+              setRecorder();
+              btn_record.removeEventListener("click", accessDevice);
+              _context.next = 12;
+              break;
+
+            case 8:
+              _context.prev = 8;
+              _context.t0 = _context["catch"](0);
+              console.log(_context.t0);
+              btn_record.textContent = "No permission";
+
+            case 12:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, null, [[0, 8]]);
+    }));
+
+    return function accessDevice(_x) {
+      return _ref.apply(this, arguments);
+    };
+  }();
+
+  btn_record.addEventListener("click", accessDevice);
+};
+
+if (recorderContainer) {
+  recordConfig();
 }
 
 /***/ }),
@@ -9683,6 +9864,17 @@ __webpack_require__(/*! ../modules/web.immediate */ "./node_modules/@babel/polyf
 __webpack_require__(/*! ../modules/web.dom.iterable */ "./node_modules/@babel/polyfill/node_modules/core-js/modules/web.dom.iterable.js");
 module.exports = __webpack_require__(/*! ../modules/_core */ "./node_modules/@babel/polyfill/node_modules/core-js/modules/_core.js");
 
+
+/***/ }),
+
+/***/ "./node_modules/axios/index.js":
+/*!*************************************!*\
+  !*** ./node_modules/axios/index.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'C:\\Users\\UNI\\OneDrive\\wow-woo\\server\\node_modules\\axios\\index.js'");
 
 /***/ }),
 

@@ -2,6 +2,12 @@ extends layouts/main
 
 block content 
     .form-container
+        .record-container#recorderContainer
+            div#video_preview
+            button#btn_record Start recording
+            button#btn_pause_resume Resume
+            p Length of video should be within 30 seconds or under specific size of file.
+    .form-container
         form(action=`/videos${routes.upload}`, method='post' enctype='multipart/form-data')
             div.fileUpload
                 label(for='file') Video File

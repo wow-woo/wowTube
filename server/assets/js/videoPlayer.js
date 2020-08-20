@@ -1,3 +1,4 @@
+import axios from "axios";
 const videoContainer = document.querySelector("#wowPlayer");
 
 const videoConfig = () => {
@@ -6,6 +7,7 @@ const videoConfig = () => {
   const video_expand = videoContainer.querySelector(".video-expand");
   const video_play_pause = videoContainer.querySelector(".video-play-pause");
   const video_runtime = videoContainer.querySelector(".video-runtime");
+  const volumeTrack = videoContainer.querySelector("#volume-track");
   const testC = videoContainer.querySelector(".test-click");
 
   const playVideo = (e) => {
@@ -23,24 +25,36 @@ const videoConfig = () => {
       videoPlayer.pause();
     }
   };
-  video_play_pause.addEventListener("click", playVideo);
 
   const volumeVideo = (e) => {
+    const ico = document.createElement("i");
+    ico.classList.add(`fas`);
+
     if (videoPlayer.muted) {
-      video_volume.firstChild.classList.replace(
-        "fa-volume-up",
-        "fa-volume-mute"
-      );
+      if (videoPlayer.volume >= "0.6") {
+        video_volume.firstChild.remove();
+        ico.classList.add(`fa-volume-up`);
+      } else if (videoPlayer.volume >= "0.3") {
+        video_volume.firstChild.remove();
+        ico.classList.add(`fa-volume-down`);
+      } else {
+        video_volume.firstChild.remove();
+        ico.classList.add(`fa-volume-off`);
+      }
+
+      video_volume.appendChild(ico);
+
       videoPlayer.muted = false;
+      volumeTrack.value = videoPlayer.volume;
     } else {
-      video_volume.firstChild.classList.replace(
-        "fa-volume-mute",
-        "fa-volume-up"
-      );
+      video_volume.firstChild.remove();
+      ico.classList.add(`fa-volume-mute`);
+      video_volume.appendChild(ico);
+
       videoPlayer.muted = true;
+      volumeTrack.value = 0;
     }
   };
-  video_volume.addEventListener("click", volumeVideo);
 
   const scaleVideo = async (e) => {
     if (document.fullscreenElement) {
@@ -60,7 +74,6 @@ const videoConfig = () => {
       }
     }
   };
-  video_expand.addEventListener("click", scaleVideo);
 
   const timeFormat = (seconds) => {
     const intSeconds = parseInt(seconds, 10);
@@ -80,16 +93,11 @@ const videoConfig = () => {
     return `${hours}:${minutes}:${restSeconds}`;
   };
 
-  const timeHandler = () => {
+  const timeHandler = (e) => {
     const totalDuration = timeFormat(videoPlayer.duration);
-
     let grant = -1;
-    const timeChecker = () => {
-      if (videoPlayer.ended || videoPlayer.paused) {
-        return;
-      }
 
-      console.log(grant === parseInt(videoPlayer.currentTime, 10));
+    const timeChecker = () => {
       const currentRunTime = timeFormat(videoPlayer.currentTime);
 
       if (grant !== parseInt(videoPlayer.currentTime, 10)) {
@@ -97,11 +105,61 @@ const videoConfig = () => {
         grant = parseInt(videoPlayer.currentTime, 10);
       }
 
+      if (videoPlayer.ended) {
+        video_play_pause.firstChild.classList.replace(
+          "fa-pause-circle",
+          "fa-play-circle"
+        );
+        return;
+      }
+
+      if (e.type === "loadedmetadata" || videoPlayer.paused) {
+        return;
+      }
+
       requestAnimationFrame(() => requestAnimationFrame(timeChecker));
     };
     timeChecker();
   };
+
+  const volumeHandler = (e) => {
+    const val = e.currentTarget.value;
+    const ico = document.createElement("i");
+    ico.classList.add(`fas`);
+    video_volume.firstChild.remove();
+
+    if (val === "0") {
+      ico.classList.add(`fa-volume-mute`);
+      video_volume.appendChild(ico);
+
+      videoPlayer.muted = true;
+    } else if (val >= "0.6") {
+      ico.classList.add(`fa-volume-up`);
+      video_volume.appendChild(ico);
+
+      videoPlayer.muted = false;
+    } else if (val >= "0.3") {
+      ico.classList.add(`fa-volume-down`);
+      video_volume.appendChild(ico);
+
+      videoPlayer.muted = false;
+    } else {
+      ico.classList.add(`fa-volume-off`);
+      video_volume.appendChild(ico);
+
+      videoPlayer.muted = false;
+    }
+
+    videoPlayer.volume = val;
+  };
+
+  video_play_pause.addEventListener("click", playVideo);
+  video_volume.addEventListener("click", volumeVideo);
+  volumeTrack.addEventListener("input", volumeHandler);
+  video_expand.addEventListener("click", scaleVideo);
+  videoPlayer.addEventListener("loadedmetadata", timeHandler);
   videoPlayer.addEventListener("play", timeHandler);
+  videoPlayer.volume = 0;
 };
 
 //initiate video play config

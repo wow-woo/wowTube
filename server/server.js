@@ -15,6 +15,7 @@ import connectionMongo from "connect-mongo";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import socialLoginRoute from "./routes/socialLoginRoute";
+import apiRouter from "./routes/apiRouter";
 
 dotenv.config();
 
@@ -50,6 +51,7 @@ app.use("/users", userRouter);
 app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("static"));
 app.use("/videos", videoRouter);
+app.use("/api", apiRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
