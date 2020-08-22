@@ -25,6 +25,10 @@ const VIDEO_DETAIL = "/:id";
 const EDIT_VIDEO = "/:id/edit";
 const DELETE_VIDEO = "/:id/delete";
 
+//API
+const VIEW = "/:id/view";
+const ADD_COMMENT = "/:id/comment/add";
+
 const routes = {
   home: HOME,
   join: JOIN,
@@ -71,6 +75,8 @@ const routes = {
   github_cb: GITHUB_CB,
   facebook_cb: FACEBOOK_CB,
   me: ME,
+  view: VIEW,
+  add_comment: ADD_COMMENT,
 };
 
 export default routes;

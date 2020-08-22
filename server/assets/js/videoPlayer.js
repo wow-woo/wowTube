@@ -1,5 +1,5 @@
-import axios from "axios";
 const videoContainer = document.querySelector("#wowPlayer");
+import axios from "axios";
 
 const videoConfig = () => {
   const videoPlayer = videoContainer.querySelector("video");
@@ -8,7 +8,22 @@ const videoConfig = () => {
   const video_play_pause = videoContainer.querySelector(".video-play-pause");
   const video_runtime = videoContainer.querySelector(".video-runtime");
   const volumeTrack = videoContainer.querySelector("#volume-track");
-  const testC = videoContainer.querySelector(".test-click");
+
+  const countView = async (e) => {
+    const video_views = document.querySelector(".video-views");
+
+    const ViewURL = window.location.href.split("/videos/");
+    await fetch(`${ViewURL[0]}/api/${ViewURL[1]}/view`, { method: "POST" });
+    const res = await fetch(`${ViewURL[0]}/api/${ViewURL[1]}/view`);
+    const data = await res.json();
+
+    if (video_views) {
+      video_views.textContent = `${data} views`;
+    }
+    console.log("view", data);
+  };
+
+  countView();
 
   const playVideo = (e) => {
     if (videoPlayer.paused) {

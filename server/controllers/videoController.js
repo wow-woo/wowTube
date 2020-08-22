@@ -1,4 +1,5 @@
 import VideoModel from "../db/models/VideoModel";
+import CommentModel from "../db/models/CommentModel";
 
 export const home = async (req, res) => {
   try {
@@ -51,14 +52,34 @@ export const postUpload = async (req, res) => {
   res.redirect(res.locals.routes.video_detail(newVideo.id));
 };
 
+const formatTime = (comments) => {
+  let newComments = [];
+
+  comments.forEach((comment) => {
+    const createTime = comment.createdAt;
+    const timeDiff = Date.now() - Date.parse(`${createTime}`);
+
+    const com = Object.assign(comment._doc, { timeDiff });
+
+    newComments.push(com);
+  });
+
+  return newComments;
+};
+
 export const videoDetail = async (req, res) => {
   try {
     const id = req.params.id;
-    const video = await VideoModel.findById(id).populate("creator");
+    const video = await VideoModel.findById(id)
+      .populate("creator")
+      .populate({
+        path: "comments",
+        populate: { path: "writer", select: ["name", "avatarURL"] },
+      });
 
-    console.log("video", video);
+    const newComments = formatTime(video.comments);
 
-    res.render("videoDetail", { video });
+    res.render("videoDetail", { video, newComments });
   } catch (error) {
     res.render("error", { error });
   }
@@ -105,7 +126,20 @@ export const deleteVideo = async (req, res) => {
   }
 };
 
-export const viewHandler = async (req, res) => {
+export const getViewHandler = async (req, res) => {
+  try {
+    const videoID = req.params.id;
+    const viewCount = await VideoModel.findById(videoID);
+    return res.json(viewCount.views);
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+  } finally {
+    res.end();
+  }
+};
+
+export const postViewHandler = async (req, res) => {
   try {
     const videoID = req.params.id;
     await VideoModel.findByIdAndUpdate(
@@ -118,5 +152,52 @@ export const viewHandler = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400);
+  } finally {
+    res.end();
+  }
+};
+
+export const postAddComment = async (req, res) => {
+  const videoID = req.params.id;
+  const text = req.body.text;
+
+  try {
+    const comment = { writer: req.user.id, text };
+    const newComment = Promise.resolve(CommentModel.create(comment));
+    const video = Promise.resolve(VideoModel.findById(videoID));
+
+    const result = await Promise.allSettled([newComment, video]);
+    result[1].value.comments.push(result[0].value._id);
+    result[1].value.save();
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+  } finally {
+    res.end();
+  }
+};
+
+export const postDeleteComment = async (req, res) => {
+  const videoID = req.params.id;
+  const { text, timeDiff } = req.body;
+
+  try {
+    const video = await VideoModel.findById(videoID).populate("comments");
+    const comment = await CommentModel.findOne({ writer: req.user.id, text });
+
+    const green = video.comments.filter((com) => {
+      return com.id === comment.id;
+    });
+
+    if (green.length !== 0) {
+      comment.remove();
+    } else {
+      throw Error();
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400);
+  } finally {
+    res.end();
   }
 };

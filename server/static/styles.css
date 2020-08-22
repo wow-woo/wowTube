@@ -330,6 +330,67 @@ button.delete {
     margin-top: 25px; }
     .video-detail-container .video-comments .video-comment-number {
       font-size: 18px; }
+  .video-detail-container .video_comments-list {
+    margin-top: 50px;
+    width: 100%; }
+    .video-detail-container .video_comments-list li {
+      width: 100%;
+      display: grid;
+      grid-template: "profile auto" "profile auto" "profile auto" / 50px auto; }
+      .video-detail-container .video_comments-list li:not(:last-child) {
+        margin-bottom: 15px; }
+      .video-detail-container .video_comments-list li .profile-container {
+        grid-area: profile; }
+        .video-detail-container .video_comments-list li .profile-container .profile {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          box-shadow: 2px 2px 2px #333; }
+          .video-detail-container .video_comments-list li .profile-container .profile img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            -o-object-fit: cover;
+               object-fit: cover; }
+      .video-detail-container .video_comments-list li .info-comment {
+        line-height: 18px;
+        font-size: 13px; }
+        .video-detail-container .video_comments-list li .info-comment span:first-child {
+          display: inline-block;
+          margin-right: 0.5em;
+          color: #303030;
+          font-weight: 500; }
+        .video-detail-container .video_comments-list li .info-comment span:nth-child(2) {
+          color: #606060;
+          font-weight: 400; }
+      .video-detail-container .video_comments-list li .txt-comment {
+        font-size: 0.9rem;
+        line-height: 20px;
+        color: #030303; }
+      .video-detail-container .video_comments-list li .btn-comment {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+            align-items: center; }
+        .video-detail-container .video_comments-list li .btn-comment span {
+          color: #909090;
+          -webkit-user-select: none;
+             -moz-user-select: none;
+              -ms-user-select: none;
+                  user-select: none;
+          cursor: pointer;
+          display: -ms-flexbox;
+          display: flex;
+          -ms-flex-pack: center;
+              justify-content: center;
+          -ms-flex-align: center;
+              align-items: center;
+          width: 1em;
+          height: 1em;
+          margin-right: 0.5em; }
+          .video-detail-container .video_comments-list li .btn-comment span:hover {
+            color: #606060; }
 
 .home-videos {
   display: grid;

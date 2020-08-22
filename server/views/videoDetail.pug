@@ -21,7 +21,33 @@ block content
             p.video-description=video.description
         .video-comments
             if video.comments.length === 1
-                span.video-comment-number 1 comment
+                span.video-comment-number 
+                    span#span_commentCount=1 
+                    |comment
             else
-                span.video-comment-number #{video.comments.length} comments
-        
+                span.video-comment-number 
+                    span#span_commentCount=video.comments.length 
+                    |comments
+        form(id='form_comment')
+            textarea(name='text', required)
+            button Add a comment
+        ul.video_comments-list#list_comments
+            if newComments
+                each comment in newComments.reverse()
+                    li
+                        .profile-container
+                            div.profile
+                                img(src=comment.writer.avatarURL)
+                        div.info-comment    
+                            span=comment.writer.name
+                            span.time_diff=comment.timeDiff
+                        div.txt-comment    
+                            span.comment_text=comment.text
+                        div.btn-comment
+                            span 
+                                <i class="fas fa-thumbs-up"></i>
+                            span 
+                                <i class="fas fa-thumbs-down"></i>
+                            if loggedUser && (`${comment.writer._id}` === loggedUser.id)
+                                span.btn_comment_delete
+                                    <i class="fas fa-times"></i>

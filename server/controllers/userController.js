@@ -67,7 +67,7 @@ export const postEditProfile = async (req, res) => {
 
   try {
     const obj = {};
-    path ? (obj.avatarURL = path) : null;
+    path ? (obj.avatarURL = `/${path}`) : null;
     name ? (obj.name = name) : null;
     email ? (obj.email = email) : null;
 
