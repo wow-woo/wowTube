@@ -16,8 +16,6 @@ if (form_comment) {
   //   });
   // };
   const deleteComment = () => {
-    console.log(btn_comment_delete);
-
     btn_comment_delete.forEach((btn) => {
       btn.addEventListener("click", async (e) => {
         const li = e.currentTarget.parentNode.parentNode;

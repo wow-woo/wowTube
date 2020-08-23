@@ -1,5 +1,6 @@
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import flash from "express-flash";
 import express from "express";
 import helmet from "helmet";
 import logger from "morgan";
@@ -41,6 +42,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 app.use(localsMiddleware);
 
 //root routes

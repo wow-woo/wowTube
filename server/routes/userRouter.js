@@ -2,11 +2,11 @@ import express from "express";
 import routeAddress from "../routes/routes";
 import {
   users,
-  userDetail,
   getEditProfile,
   postEditProfile,
   getChangePassword,
   postChangePassword,
+  getUser,
 } from "../controllers/userController";
 import { onlyPrivate } from "../middlewares/authMiddleware";
 import { multerAvatar } from "../middlewares/multerMiddleware";
@@ -28,6 +28,6 @@ userRouter.get(routeAddress.change_password, getChangePassword);
 
 userRouter.post(routeAddress.change_password, postChangePassword);
 
-userRouter.get(routeAddress.user_detail(), onlyPrivate, userDetail);
+userRouter.get(routeAddress.user_detail(), getUser);
 
 export default userRouter;

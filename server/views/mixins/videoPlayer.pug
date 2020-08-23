@@ -1,6 +1,6 @@
 mixin videoPlayer(video={})
     .videoPlayer#wowPlayer
-        video(src=video.src, muted, autoplay)
+        video(src=video.src, muted=true)
         .videoPlayer_controls
             .videoPlayer_column
                 input.videoPlayer_volume#volume-track(type='range', min='0', max='1', step='0.1' value='0')

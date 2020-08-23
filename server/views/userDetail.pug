@@ -7,7 +7,7 @@ block content
         .user-profile_header
             img.u-avatar(src=user.avatarURL)
             h4.profile_username=user.name
-        if user.id === loggedUser.id
+        if user&& loggedUser && user.id === loggedUser.id
             .user-profile_btns
                 a(href=`/users${routes.edit_profile}`)
                     button 📝Edit profile
@@ -20,5 +20,5 @@ block content
                     title:video.title,
                     description:video.description ,
                     views:video.views,
-                    videoURL:`/${video.videoURL}`     
+                    videoURL:video.videoURL     
                 })

@@ -1,5 +1,5 @@
 const videoContainer = document.querySelector("#wowPlayer");
-import axios from "axios";
+import getBlobDuration from "get-blob-duration";
 
 const videoConfig = () => {
   const videoPlayer = videoContainer.querySelector("video");
@@ -20,7 +20,6 @@ const videoConfig = () => {
     if (video_views) {
       video_views.textContent = `${data} views`;
     }
-    console.log("view", data);
   };
 
   countView();
@@ -29,13 +28,13 @@ const videoConfig = () => {
     if (videoPlayer.paused) {
       videoPlayer.play();
       video_play_pause.firstChild.classList.replace(
-        "fa-play-circle",
-        "fa-pause-circle"
+        "fa-pause-circle",
+        "fa-play-circle"
       );
     } else {
       video_play_pause.firstChild.classList.replace(
-        "fa-pause-circle",
-        "fa-play-circle"
+        "fa-play-circle",
+        "fa-pause-circle"
       );
       videoPlayer.pause();
     }
@@ -108,8 +107,11 @@ const videoConfig = () => {
     return `${hours}:${minutes}:${restSeconds}`;
   };
 
-  const timeHandler = (e) => {
-    const totalDuration = timeFormat(videoPlayer.duration);
+  const timeHandler = async (e) => {
+    const blob = await fetch(videoPlayer.src).then((res) => res.blob());
+    const duration = await getBlobDuration(blob);
+
+    const totalDuration = timeFormat(duration);
     let grant = -1;
 
     const timeChecker = () => {
@@ -173,6 +175,8 @@ const videoConfig = () => {
   volumeTrack.addEventListener("input", volumeHandler);
   video_expand.addEventListener("click", scaleVideo);
   videoPlayer.addEventListener("loadedmetadata", timeHandler);
+  videoPlayer.addEventListener("loaded", timeHandler);
+  videoPlayer.addEventListener("canplay", timeHandler);
   videoPlayer.addEventListener("play", timeHandler);
   videoPlayer.volume = 0;
 };

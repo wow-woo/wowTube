@@ -28,20 +28,30 @@ export const getLogin = (req, res) => {
 export const postLogin = passport.authenticate("local", {
   failureRedirect: routes.login,
   successRedirect: routes.home,
+  successFlash: "succccccccc",
+  failureFlash: "faillllllllll",
 });
 
 export const logout = (req, res) => {
   //log user out
+  req.flash("info", "logggggggged out");
   req.logout();
-
   res.redirect(res.locals.routes.home);
 };
 
 export const users = (req, res) => res.render("users");
 
-export const getMe = (req, res) => res.render("userDetail", { user: req.user });
+export const getMe = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.user._id).populate("videos");
 
-export const userDetail = async (req, res) => {
+    res.render("userDetail", { user });
+  } catch (error) {
+    res.redirect(routes.home);
+  }
+};
+
+export const getUser = async (req, res) => {
   const {
     params: { id },
   } = req;
@@ -50,7 +60,6 @@ export const userDetail = async (req, res) => {
     const user = await UserModel.findById(id).populate("videos");
 
     console.log("user", user);
-
     res.render("userDetail", { user });
   } catch (error) {
     res.redirect(routes.home);
@@ -62,12 +71,12 @@ export const getEditProfile = (req, res) => res.render("editProfile");
 export const postEditProfile = async (req, res) => {
   const {
     body: { name, email },
-    file: { path },
+    file: { location },
   } = req;
 
   try {
     const obj = {};
-    path ? (obj.avatarURL = `/${path}`) : null;
+    location ? (obj.avatarURL = location) : null;
     name ? (obj.name = name) : null;
     email ? (obj.email = email) : null;
 
@@ -80,7 +89,10 @@ export const postEditProfile = async (req, res) => {
   }
 };
 
-export const getChangePassword = (req, res) => res.render("changePassword");
+export const getChangePassword = (req, res) => {
+  console.log("haha");
+  res.render("changePassword");
+};
 
 export const postChangePassword = async (req, res) => {
   const {

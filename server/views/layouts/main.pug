@@ -1,3 +1,5 @@
+include ../mixins/flash.pug
+
 doctype html
 html
     head
@@ -8,5 +10,17 @@ html
     body
         include components/header
         main
+            if message || info || success
+                p=JSON.stringify(message)
+                p zzzzzzzz
+                p=info
+                if message.info
+                    +flash({text:message.info, type:'info'})
+                else if message.success
+                    +flash({text:message.success, type:'success'})
+                else if message.error
+                    +flash({text:message.error, type:'error'})
+            else
+                p hhhhhhhhhh
             block content
         include components/footer
