@@ -1,0 +1,40 @@
+@keyframes flashAni {
+  0% {
+    transform: translateY(-100%);
+  }
+  5% {
+    transform: translateY(0px);
+  }
+  95% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+.flash-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  width: 100%;
+  padding: 20px;
+  animation: flashAni 5s ease-in-out forwards;
+
+  &.info {
+    background-color: #f1c40f;
+  }
+  &.success {
+    background-color: #2ecc71;
+  }
+  &.error {
+    background-color: #e74c3c;
+  }
+  .flash-message {
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+    font-size: 14px;
+  }
+}

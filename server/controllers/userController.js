@@ -9,12 +9,15 @@ export const postJoin = async (req, res, next) => {
   const { name, email, password, password2 } = req.body;
   if (password !== password2) {
     res.status(400);
+    req.message = { type: "error", text: "password doesn't match" };
+    req.flash("error", "doesnt match");
     res.render("join");
   } else {
     try {
       //register user
       const user = await UserModel({ name, email });
       await UserModel.register(user, password);
+
       next();
     } catch (error) {
       res.render("error", { error });
@@ -34,7 +37,6 @@ export const postLogin = passport.authenticate("local", {
 
 export const logout = (req, res) => {
   //log user out
-  req.flash("info", "logggggggged out");
   req.logout();
   res.redirect(res.locals.routes.home);
 };

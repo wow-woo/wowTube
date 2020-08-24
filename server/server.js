@@ -22,6 +22,7 @@ dotenv.config();
 
 const app = express();
 app.set("view engine", "pug");
+app.set("trust proxy", true);
 
 const Store = connectionMongo(session);
 //global middleware
@@ -36,8 +37,9 @@ app.use(
     resave: true,
     saveUninitialized: false,
     store: new Store({ mongooseConnection: mongoose.connection }),
+    unset: "destroy",
     // this is for https connection for secureg
-    // cookie: { secure: true },
+    // cookie: { secure: true, maxAge: 6 * 60 * 60 * 1000 },
   })
 );
 app.use(passport.initialize());
